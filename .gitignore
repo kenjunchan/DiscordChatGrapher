@@ -1,3 +1,5 @@
 input/*
 !input/TestInput1.txt
 !input/TestInput2.txt
+__pycache__/
+*.py[cod]

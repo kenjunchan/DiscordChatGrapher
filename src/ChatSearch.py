@@ -18,7 +18,7 @@ def count_occurences(file, wordList):
         i = 0
         while (i < len(wordList)):
             if(not re.search('\[[0-9]{2}\-.{3}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\s.{2}\]', line, re.IGNORECASE) and bool(re.search(rf'\b{wordList[i]}\b', line, re.IGNORECASE))):
-                countList[i] += 1   
+                countList[i] += len(re.findall(rf'\b{wordList[i]}\b', line, re.IGNORECASE))
             i += 1
     return countList
 
