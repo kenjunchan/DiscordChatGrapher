@@ -47,9 +47,9 @@ def graph_word(wordList, indx):
     occurences = []
     for k, v in sortedDictionary.items():
         if(v[indx]>=constants.CHAT_THRESHOLD):
-            tempname = k[:-5]
-            if(len(tempname) > 10):
-                usernames.append(tempname[:10])
+            tempname = k[:-5] #removes trailing #nnnn after username
+            if(len(tempname) > constants.NAME_LENGTH_THRESHOLD):
+                usernames.append(tempname[:constants.NAME_LENGTH_THRESHOLD])
             else:
                 usernames.append(tempname)
             occurences.append((v[indx]))
@@ -60,7 +60,7 @@ def graph_word(wordList, indx):
         left[i-1] = left[i-1] * i
         i += 1
     
-    plt.barh(usernames, occurences, height = .65, color=constants.GRAPH_COLORS) 
+    plt.barh(usernames, occurences, height = constants.GRAPH_HEIGHT, color=constants.GRAPH_COLORS) 
   
     for index, value in enumerate(occurences): 
         plt.text(value, index, 
