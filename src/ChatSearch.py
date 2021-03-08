@@ -1,4 +1,7 @@
-import fileinput, sys, os, re
+import fileinput
+import sys
+import os
+import re
 import numpy as np  # pip3 install numpy
 import constants
 
@@ -15,9 +18,9 @@ def count_occurences(file, wordList):
     for line in file:
         i = 0
         while (i < len(wordList)):
-            if(not re.search('\[[0-9]{2}\-.{3}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\s.{2}\]', line, re.IGNORECASE) and bool(re.search(rf'\b{wordList[i]}\b', line, re.IGNORECASE))):
+            if(not re.search('\[[0-9]{2}\-.{3}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\s.{2}\]', line, re.IGNORECASE) and bool(re.search(r'(?<!\w){}(?!\w)'.format(wordList[i]), line, re.IGNORECASE))):
                 countList[i] += len(re.findall(
-                    rf'\b{wordList[i]}\b', line, re.IGNORECASE))
+                    r'(?<!\w){}(?!\w)'.format(wordList[i]), line, re.IGNORECASE))
             i += 1
     return countList
 

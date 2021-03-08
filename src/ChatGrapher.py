@@ -1,4 +1,7 @@
-import fileinput, sys, os, re
+import fileinput
+import sys
+import os
+import re
 import numpy as np  # pip3 install numpy
 import constants
 
@@ -23,7 +26,7 @@ def process_file(file, wordList):
                 i = 0
                 while (i < len(wordList)):
                     countList[i] += len(re.findall(
-                        rf'\b{wordList[i]}\b', line, re.IGNORECASE))
+                        r'(?<!\w){}(?!\w)'.format(wordList[i]), line, re.IGNORECASE))
                     i += 1
                 userDictionary[username] = np.add(
                     userDictionary.get(username), countList)
