@@ -3,6 +3,7 @@ import sys
 import os
 import re
 import numpy as np  # pip3 install numpy
+import matplotlib.pyplot as plt
 import constants
 
 userDictionary = {}
@@ -40,6 +41,37 @@ def print_dictionary(userDict, word):
                                                 for elem in v]) + "]")
 
 
+def graph_word(wordList, indx):
+    sortedDictionary = dict(sorted(userDictionary.items(), key=lambda item: item[1][indx], reverse = False))
+    usernames = []
+    occurences = []
+    for k, v in sortedDictionary.items():
+        if(v[indx]>=constants.CHAT_THRESHOLD):
+            tempname = k[:-5]
+            if(len(tempname) > 10):
+                usernames.append(tempname[:10])
+            else:
+                usernames.append(tempname)
+            occurences.append((v[indx]))
+    left = [1] * len(usernames)
+    
+    i = 1
+    while(i <= len(left)):
+        left[i-1] = left[i-1] * i
+        i += 1
+    
+    plt.barh(usernames, occurences, height = .65, color=constants.GRAPH_COLORS) 
+  
+    for index, value in enumerate(occurences): 
+        plt.text(value, index, 
+            str(value)) 
+        
+    plt.ylabel('usernames')
+    plt.xlabel('Occurences of: ' + wordList[indx])
+    plt.title('Number of times ' + wordList[indx] + " has been said")
+    plt.show()
+
+
 def main(argv):
     wordList = argv[1:]
     all_files = os.listdir("../input")
@@ -49,6 +81,11 @@ def main(argv):
         file = open(("../input/"+str(filein)), 'r', errors='ignore')
         process_file(file, wordList)
     print_dictionary(userDictionary, wordList)
+    
+    indx = 0
+    for word in wordList:
+        graph_word(wordList, indx)
+        indx += 1
 
 
 if __name__ == "__main__":

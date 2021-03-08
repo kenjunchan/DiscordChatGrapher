@@ -1,7 +1,4 @@
-import fileinput
-import sys
-import os
-import re
+import fileinput, sys, os, re
 import numpy as np  # pip3 install numpy
 import constants
 
