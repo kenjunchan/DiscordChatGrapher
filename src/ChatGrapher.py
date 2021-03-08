@@ -12,27 +12,32 @@ def get_username_from_line(line):
     return line[21:]
 
 
-def process_file(file, word):
+def process_file(file, wordList):
     global userDictionary
     username = ""
     for line in file:
         if(bool(re.search('\[[0-9]{2}\-.{3}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\s.{2}\]', line, re.IGNORECASE))):
             username = ' '.join(get_username_from_line(line).split())
             if(not username in userDictionary):
-                userDictionary[username] = 0
+                userDictionary[username] = [0] * len(wordList)
         else:
             if (username != ""):
-                userDictionary[username] += len(
-                    re.findall(rf'\b{word}\b', line, re.IGNORECASE))
+                countList = [0] * len(wordList)
+                i = 0
+                while (i < len(wordList)):
+                    countList[i] += len(re.findall(
+                        rf'\b{wordList[i]}\b', line, re.IGNORECASE))
+                    i += 1
+                userDictionary[username] = np.add(
+                    userDictionary.get(username), countList)
 
 
 def print_dictionary(userDict, word):
-    print("\nUsername : Amount of Occurences of | " + word + "\n")
-    sortedDict = dict(
-        sorted(userDict.items(), key=lambda item: item[1], reverse=True))
-    for k, v in sortedDict.items():
-        if(v >= constants.CHAT_THRESHOLD):
-            print(k, ':', v)
+    print("\nUsername : Occurences of " + str(word) + "\n")
+    for k, v in userDict.items():
+        if(sum(v) >= constants.CHAT_THRESHOLD):
+            print(k + ' : ' + " [" + ', '.join([str(elem)
+                                                for elem in v]) + "]")
 
 
 def main(argv):
@@ -42,8 +47,8 @@ def main(argv):
     for filein in txt_files:
         print("Reading File: " + filein)
         file = open(("../input/"+str(filein)), 'r', errors='ignore')
-        process_file(file, argv[1])
-    print_dictionary(userDictionary, argv[1])
+        process_file(file, wordList)
+    print_dictionary(userDictionary, wordList)
 
 
 if __name__ == "__main__":
