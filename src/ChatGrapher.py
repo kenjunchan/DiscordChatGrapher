@@ -4,6 +4,7 @@ import os
 import re
 import numpy as np  # pip3 install numpy
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import figure
 import constants
 
 userDictionary = {}
@@ -12,6 +13,8 @@ userDictionary = {}
 def get_username_from_line(line):
     return line[21:]
 
+def count_words(word, line):
+    return len(re.findall(r'(?<!\w){}(?!\w)'.format(word), line, re.IGNORECASE))
 
 def process_file(file, wordList):
     global userDictionary
@@ -26,11 +29,9 @@ def process_file(file, wordList):
                 countList = [0] * len(wordList)
                 i = 0
                 while (i < len(wordList)):
-                    countList[i] += len(re.findall(
-                        r'(?<!\w){}(?!\w)'.format(wordList[i]), line, re.IGNORECASE))
+                    countList[i] += count_words(wordList[i], line)
                     i += 1
-                userDictionary[username] = np.add(
-                    userDictionary.get(username), countList)
+                userDictionary[username] = np.add(userDictionary.get(username), countList)
 
 
 def print_dictionary(userDict, word):
@@ -60,7 +61,8 @@ def graph_word(wordList, indx):
         left[i-1] = left[i-1] * i
         i += 1
     
-    plt.barh(usernames, occurences, height = constants.GRAPH_HEIGHT, color=constants.GRAPH_COLORS) 
+    plt.figure(indx + 1)
+    plt.barh(usernames, occurences, height = constants.GRAPH_BAR_HEIGHT, color=constants.GRAPH_COLORS) 
   
     for index, value in enumerate(occurences): 
         plt.text(value, index, 
@@ -69,8 +71,6 @@ def graph_word(wordList, indx):
     plt.ylabel('usernames')
     plt.xlabel('Occurences of: ' + wordList[indx])
     plt.title('Number of times ' + wordList[indx] + " has been said")
-    plt.show()
-
 
 def main(argv):
     wordList = argv[1:]
@@ -81,12 +81,12 @@ def main(argv):
         file = open(("../input/"+str(filein)), 'r', errors='ignore')
         process_file(file, wordList)
     print_dictionary(userDictionary, wordList)
-    
+    plt.rcParams["figure.figsize"] = constants.GRAPH_WIDTH_HEIGHT
     indx = 0
     for word in wordList:
         graph_word(wordList, indx)
         indx += 1
-
-
+    plt.show()
+    
 if __name__ == "__main__":
     main(sys.argv)

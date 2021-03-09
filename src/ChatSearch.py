@@ -9,15 +9,16 @@ def print_fileinput(file):
         print(line, end='')
     print("\n")
 
+def count_words(word, line):
+    return len(re.findall(r'(?<!\w){}(?!\w)'.format(word), line, re.IGNORECASE))
 
 def count_occurences(file, wordList):
     countList = [0] * len(wordList)
     for line in file:
         i = 0
         while (i < len(wordList)):
-            if(not re.search('\[[0-9]{2}\-.{3}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\s.{2}\]', line, re.IGNORECASE) and bool(re.search(r'(?<!\w){}(?!\w)'.format(wordList[i]), line, re.IGNORECASE))):
-                countList[i] += len(re.findall(
-                    r'(?<!\w){}(?!\w)'.format(wordList[i]), line, re.IGNORECASE))
+            if(not re.search('\[[0-9]{2}\-.{3}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\s.{2}\]', line, re.IGNORECASE)):
+                countList[i] += count_words(wordList[i], line)
             i += 1
     return countList
 
@@ -38,7 +39,7 @@ def count_matches(file):
 
 def main(argv):
     wordList = argv[1:]
-    total_occurences = [0]*3
+    total_occurences = [0] * len(wordList)
     all_files = os.listdir("../input")
     txt_files = filter(lambda x: x[-4:] == '.txt', all_files)
     for filein in txt_files:
