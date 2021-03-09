@@ -69,8 +69,8 @@ def graph_word(wordList, indx):
             str(value)) 
         
     plt.ylabel('usernames')
-    plt.xlabel('Occurences of: ' + wordList[indx])
-    plt.title('Number of times ' + wordList[indx] + " has been said")
+    plt.xlabel('Occurences of: \"' + wordList[indx] + "\"")
+    plt.title('Number of times \"' + wordList[indx] + "\" has been said")
 
 def main(argv):
     wordList = argv[1:]
