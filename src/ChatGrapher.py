@@ -11,12 +11,35 @@ userDictionary = {}
 
 
 def get_username_from_line(line):
+    '''
+    Returns the username from the username line
+    Parameters:
+        param1 (string)
+    Returns:
+        username (string)
+    '''
     return line[21:]
 
 def count_words(word, line):
+    '''
+    Returns the number of occurences of a word in a given line
+    Parameters:
+        param1 (string)
+        param2 (string)
+    Returns:
+        count (number)
+    '''
     return len(re.findall(r'(?<!\w){}(?!\w)'.format(word), line, re.IGNORECASE))
 
 def process_file(file, wordList):
+    '''
+    Processes the given files, going line by line and adding up all occurences of every word in the wordlist
+    Parameters:
+        param1 (file)
+        param2 (string[])
+    Returns:
+        none
+    '''
     global userDictionary
     username = ""
     for line in file:
@@ -35,6 +58,14 @@ def process_file(file, wordList):
 
 
 def print_dictionary(userDict, word):
+    '''
+    Prints the dictionary
+    Parameters:
+        param1 (Dictionary)
+        param2 (string)
+    Returns:
+        none
+    '''
     print("\nUsername : Occurences of " + str(word) + "\n")
     for k, v in userDict.items():
         if(sum(v) >= constants.CHAT_THRESHOLD):
@@ -43,6 +74,14 @@ def print_dictionary(userDict, word):
 
 
 def graph_word(wordList, indx):
+    '''
+    graphs the occurences of the word with horizontal bar graph given the words to graph
+    Parameters:
+        param1 (string[])
+        param2 (number)
+    Returns:
+        none
+    '''
     sortedDictionary = dict(sorted(userDictionary.items(), key=lambda item: item[1][indx], reverse = False))
     usernames = []
     occurences = []

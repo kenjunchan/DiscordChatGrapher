@@ -4,15 +4,38 @@ import constants
 
 
 def print_fileinput(file):
+    '''
+    Prints the file entirely in console
+    Parameters:
+        param1 (file)
+    Returns:
+        none
+    '''
     print(os.path.basename(file.name))
     for line in file:
         print(line, end='')
     print("\n")
 
 def count_words(word, line):
+    '''
+    Returns the number of occurences of a word in a given line
+    Parameters:
+        param1 (string)
+        param2 (string)
+    Returns:
+        count (number)
+    '''
     return len(re.findall(r'(?<!\w){}(?!\w)'.format(word), line, re.IGNORECASE))
 
 def count_occurences(file, wordList):
+    '''
+    Returns the number of occurences of all given words in a given file
+    Parameters:
+        param1 (file)
+        param2 (string[])
+    Returns:
+        count (number[])
+    '''
     countList = [0] * len(wordList)
     for line in file:
         i = 0
@@ -24,17 +47,16 @@ def count_occurences(file, wordList):
 
 
 def print_occurences(wordList, countList):
+    '''
+    Prints the occurences of all the words in wordList
+    Parameters:
+        param1 (string[])
+        param2 (number[])
+    Returns:
+        none
+    '''
     for word, count in zip(wordList, countList):
         print("Number of Occurences of \"" + word + "\": " + str(count))
-
-
-def count_matches(file):
-    print("Counting Matches in: " + os.path.basename(file.name))
-    count = 0
-    for line in file:
-        if(bool(re.search('\[[0-9]{2}\-.{3}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\s.{2}\]', line, re.IGNORECASE))):
-            count += 1
-    print("Number of Occurences: " + str(count))
 
 
 def main(argv):
