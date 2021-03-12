@@ -39,9 +39,11 @@ def is_emote(word):
     Returns:
         boolean
     '''
-    if(len(word) >= 3 or word in constants.SPECIAL_WORDS):
+    if(len(word) >= 3):
         if(word[0] == ':' and word[len(word) - 1] == ':'):
             return True
+    if(word.lower() in (word.lower() for word in constants.SPECIAL_WORDS)):
+        return True
     return False
 
 
@@ -77,7 +79,7 @@ def process_file(file, wordList):
                 countList = [0] * len(wordList)
                 i = 0
                 while (i < len(wordList)):
-                    if(is_emote):
+                    if(is_emote(wordList[i])):
                         countList[i] += count_emotes(wordList[i], line)
                     else:
                         countList[i] += count_words(wordList[i], line)

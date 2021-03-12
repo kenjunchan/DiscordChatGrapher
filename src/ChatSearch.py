@@ -36,9 +36,11 @@ def is_emote(word):
     Returns:
         boolean
     '''
-    if(len(word) >= 3 or word in constants.SPECIAL_WORDS):
+    if(len(word) >= 3):
         if(word[0] == ':' and word[len(word) - 1] == ':'):
             return True
+    if(word.lower() in (word.lower() for word in constants.SPECIAL_WORDS)):
+        return True
     return False
 
 
@@ -67,7 +69,7 @@ def count_occurences(file, wordList):
         i = 0
         while (i < len(wordList)):
             if(not re.search('\[[0-9]{2}\-.{3}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\s.{2}\]', line, re.IGNORECASE)):
-                if(is_emote):
+                if(is_emote(wordList[i])):
                     countList[i] += count_emotes(wordList[i], line)
                 else:
                     countList[i] += count_words(wordList[i], line)
