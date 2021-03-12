@@ -83,7 +83,6 @@ def process_file(file, wordList):
                         countList[i] += count_emotes(wordList[i], line)
                     else:
                         countList[i] += count_words(wordList[i], line)
-                    #countList[i] += count_words(wordList[i], line)
                     i += 1
                 userDictionary[username] = np.add(userDictionary.get(username), countList)
 
