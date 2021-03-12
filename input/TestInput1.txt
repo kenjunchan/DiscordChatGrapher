@@ -1,7 +1,0 @@
-Dog
-Giraffe
-Cat
-Elephant
-Animal
-Pig
-Horse

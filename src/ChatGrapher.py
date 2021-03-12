@@ -31,6 +31,31 @@ def count_words(word, line):
     '''
     return len(re.findall(r'(?<!\w){}(?!\w)'.format(word), line, re.IGNORECASE))
 
+def is_emote(word):
+    '''
+    returns true if the word is an emote or a special word, false otherwise
+    Parameters:
+        param1 (string)
+    Returns:
+        boolean
+    '''
+    if(len(word) >= 3 or word in constants.SPECIAL_WORDS):
+        if(word[0] == ':' and word[len(word) - 1] == ':'):
+            return True
+    return False
+
+
+def count_emotes(word, line):
+    '''
+    Returns the number of occurences of a given word in a given line
+    Parameters:
+        param1 (string)
+        param2 (string)
+    Returns:
+        count (number)
+    '''
+    return line.lower().count(word.lower())
+
 def process_file(file, wordList):
     '''
     Processes the given files, going line by line and adding up all occurences of every word in the wordlist
@@ -52,7 +77,11 @@ def process_file(file, wordList):
                 countList = [0] * len(wordList)
                 i = 0
                 while (i < len(wordList)):
-                    countList[i] += count_words(wordList[i], line)
+                    if(is_emote):
+                        countList[i] += count_emotes(wordList[i], line)
+                    else:
+                        countList[i] += count_words(wordList[i], line)
+                    #countList[i] += count_words(wordList[i], line)
                     i += 1
                 userDictionary[username] = np.add(userDictionary.get(username), countList)
 

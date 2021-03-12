@@ -27,6 +27,32 @@ def count_words(word, line):
     '''
     return len(re.findall(r'(?<!\w){}(?!\w)'.format(word), line, re.IGNORECASE))
 
+
+def is_emote(word):
+    '''
+    returns true if the word is an emote or a special word, false otherwise
+    Parameters:
+        param1 (string)
+    Returns:
+        boolean
+    '''
+    if(len(word) >= 3 or word in constants.SPECIAL_WORDS):
+        if(word[0] == ':' and word[len(word) - 1] == ':'):
+            return True
+    return False
+
+
+def count_emotes(word, line):
+    '''
+    Returns the number of occurences of a given word in a given line
+    Parameters:
+        param1 (string)
+        param2 (string)
+    Returns:
+        count (number)
+    '''
+    return line.lower().count(word.lower())
+
 def count_occurences(file, wordList):
     '''
     Returns the number of occurences of all given words in a given file
@@ -41,7 +67,10 @@ def count_occurences(file, wordList):
         i = 0
         while (i < len(wordList)):
             if(not re.search('\[[0-9]{2}\-.{3}\-[0-9]{2}\s[0-9]{2}\:[0-9]{2}\s.{2}\]', line, re.IGNORECASE)):
-                countList[i] += count_words(wordList[i], line)
+                if(is_emote):
+                    countList[i] += count_emotes(wordList[i], line)
+                else:
+                    countList[i] += count_words(wordList[i], line)
             i += 1
     return countList
 
